@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-#include "bootloader.h"
+//#include "bootloader.h"
 #ifdef PROTOCOL_LUFA
   #include "lufa.h"
   #include "split_util.h"
@@ -39,54 +39,36 @@ enum macro_keycodes {
   KC_SAMPLEMACRO,
 };
 
-#define KC______ KC_TRNS
-#define KC_XXXXX KC_NO
-#define KC_LOWER LOWER
-#define KC_RAISE RAISE
-#define KC_RST   RESET
-#define KC_LRST  RGBRST
-#define KC_LTOG  RGB_TOG
-#define KC_LHUI  RGB_HUI
-#define KC_LHUD  RGB_HUD
-#define KC_LSAI  RGB_SAI
-#define KC_LSAD  RGB_SAD
-#define KC_LVAI  RGB_VAI
-#define KC_LVAD  RGB_VAD
-#define KC_LMOD  RGB_MOD
-#define KC_CTLTB CTL_T(KC_TAB)
-#define KC_GUIEI GUI_T(KC_LANG2)
-#define KC_ALTKN ALT_T(KC_LANG1)
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    LAYOUT( //  default layer
+    [0] = LAYOUT( //  default layer
                  KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_RPRN,
                  MT(MOD_LCTL,KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, LT(2,KC_SCLN), MT(MOD_RCTL,KC_QUOT),
                  KC_LSPO, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, LT(1,KC_SLSH), KC_SFTENT,
                  KC_LALT, KC_LGUI, OSM(MOD_LSFT), LT(3,KC_SPC), MO(4), KC_RGUI),
     // slash
-    LAYOUT(
+    [1] = LAYOUT(
                  KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_NO  , KC_TRNS,
                  KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_MSTP, KC_F10 , KC_TRNS, KC_APP , KC_TRNS, KC_TRNS, KC_NO  , KC_TRNS,
                  KC_TRNS, KC_VOLD, KC_VOLU, KC_MUTE, KC_F11 , KC_F12 , KC_INS , KC_PSCR, KC_SLCK, KC_PAUS, KC_NO  , KC_TRNS,
-                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_RALT, KC_RGUI),
+                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS, KC_TRNS),
     // scolon
-    LAYOUT(
+    [2] = LAYOUT(
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_BSPC, KC_DEL , KC_NO  , KC_NO  , KC_NO,
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_NO  , KC_TRNS,
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_PGUP, KC_END , KC_NO  , KC_TRNS,
-                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_RALT, KC_RGUI),
+                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS, KC_TRNS),
     // space
-    LAYOUT(
+    [3] = LAYOUT(
                  KC_GRV , KC_EXLM, KC_AT  , KC_HASH, KC_DLR , KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LBRC, KC_RBRC, KC_TRNS,
                  KC_TRNS, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_BSLS,
                  KC_TRNS, KC_TILD, KC_PIPE, KC_LCBR, KC_RCBR, KC_UNDS, KC_PLUS, KC_MINS, KC_EQL , KC_DOT , KC_SLSH, KC_TRNS,
-                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_RALT, KC_RGUI),
+                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS, KC_TRNS),
     // mouse
-    LAYOUT(
-                RGB_MOD ,RGB_RMOD,RGB_M_P ,RGB_M_B ,RGB_M_R ,RGB_M_SW,RGB_M_SN, KC_WH_D, KC_MS_U, KC_WH_U, KC_NO  , KC_NO  ,
+    [4] = LAYOUT(
+                 RGB_MOD,RGB_RMOD,RGB_M_P ,RGB_M_B ,RGB_M_R ,RGB_M_SW,RGB_M_SN, KC_WH_D, KC_MS_U, KC_WH_U, KC_NO  , KC_NO  ,
                  KC_LCTL,RGB_M_K ,RGB_M_X ,RGB_M_G ,RGB_M_T ,RGB_TOG , KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_TRNS,
                  KC_TRNS,RGB_HUI ,RGB_HUD ,RGB_SAI ,RGB_SAD ,RGB_VAI ,RGB_VAD , KC_ACL0, KC_ACL1, KC_ACL2, KC_NO  , KC_TRNS,
-                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_RALT, KC_RGUI),
+                 KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS, KC_TRNS),
 };
 
 int RGB_current_mode;
@@ -118,12 +100,96 @@ void matrix_init_user(void) {
 //SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
 #ifdef SSD1306OLED
 
+char keylog_str[24] = {};
+char keylogs_str[21] = {};
+int keylogs_str_idx = 0;
+char layer_state_str[24];
+char rbf_info_str[24];
+
+// const char *read_mode_icon(bool swap);
+// void set_timelog(void);
+// const char *read_timelog(void);
+
+const char code_to_name[60] = {
+    ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+    'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\',
+    '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
+
+void set_keylog(uint16_t keycode, keyrecord_t *record) {
+  char name = ' ';
+  //if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
+  if (keycode < 60) {
+    name = code_to_name[keycode];
+  }
+  // update keylog
+  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
+           record->event.key.row, record->event.key.col,
+           keycode, name);
+
+  // update keylogs
+  if (keylogs_str_idx == sizeof(keylogs_str) - 1) {
+    keylogs_str_idx = 0;
+    for (int i = 0; i < sizeof(keylogs_str) - 1; i++) {
+      keylogs_str[i] = ' ';
+    }
+  }
+
+  keylogs_str[keylogs_str_idx] = name;
+  keylogs_str_idx++;
+}
+
+const char *read_keylog(void) {
+  return keylog_str;
+}
+
+const char *read_keylogs(void) {
+  return keylogs_str;
+}
+
+const char* read_layer_state(void) {
+  switch (biton32(layer_state)) {
+  case 0:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Default");
+    break;
+  case 1:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Slash");
+    break;
+  case 2:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Scolon");
+    break;
+  case 3:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Space");
+    break;
+  case 4:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Mouse");
+    break;
+  default:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state);
+  }
+  return layer_state_str;
+}
+
+const char *read_logo(void) {
+  static char logo[] = {
+                        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
+                        0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
+                        0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
+                        0};
+
+  return logo;
+}
+
+const char *read_rgb_info(void) {
+  snprintf(rbf_info_str, sizeof(rbf_info_str), "%s %2d h%3d s%3d v%3d",
+           rgblight_config.enable ? "on" : "- ", rgblight_config.mode,
+           rgblight_config.hue, rgblight_config.sat, rgblight_config.val);
+  return rbf_info_str;
+}
+
 // When add source files to SRC in rules.mk, you can use functions.
-const char *read_layer_state(void);
-const char *read_logo(void);
-void set_keylog(uint16_t keycode, keyrecord_t *record);
-const char *read_keylog(void);
-const char *read_keylogs(void);
 
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
@@ -144,6 +210,9 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_timelog());
   } else {
+    /* matrix_write_ln(matrix, read_layer_state()); */
+    /* matrix_write_ln(matrix, read_keylog()); */
+    /* matrix_write_ln(matrix, read_keylogs()); */
     matrix_write(matrix, read_logo());
   }
 }
@@ -172,59 +241,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
-    case QWERTY:
+  case LT(1,KC_SLSH):
+    if (record->event.pressed) {
+      update_tri_layer_RGB(1, 2, 3);
+    } else {
+      update_tri_layer_RGB(1, 2, 3);
+    }
+    return true;
+  case LT(2, KC_SCLN):
+    if (record->event.pressed) {
+      update_tri_layer_RGB(1, 2, 3);
+    } else {
+      update_tri_layer_RGB(1, 2, 3);
+    }
+    return true;
+  case LT(3, KC_SPC):
+    return true;
+  case MO(4):
+    return true;
+  case RGB_MOD:
+    #ifdef RGBLIGHT_ENABLE
       if (record->event.pressed) {
-        persistent_default_layer_set(1UL<<_QWERTY);
+        rgblight_mode(RGB_current_mode);
+        rgblight_step();
+        RGB_current_mode = rgblight_config.mode;
       }
-      return false;
-      break;
-    case LOWER:
+    #endif
+    return false;
+  case KC_RGUI:
+    #ifdef RGBLIGHT_ENABLE
       if (record->event.pressed) {
-        layer_on(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        eeconfig_update_rgblight_default();
+        rgblight_enable();
+        RGB_current_mode = rgblight_config.mode;
       }
-      return false;
-      break;
-    case RAISE:
-      if (record->event.pressed) {
-        layer_on(_RAISE);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_RAISE);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
-      }
-      return false;
-      break;
-    case ADJUST:
-        if (record->event.pressed) {
-          layer_on(_ADJUST);
-        } else {
-          layer_off(_ADJUST);
-        }
-        return false;
-        break;
-    case RGB_MOD:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          rgblight_mode(RGB_current_mode);
-          rgblight_step();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      return false;
-      break;
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      break;
+    #endif
+    return true;
   }
   return true;
 }

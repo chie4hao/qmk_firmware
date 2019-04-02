@@ -20,40 +20,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-//#define USE_MATRIX_I2C
 
 /* Select hand configuration */
 
-/* #define MASTER_LEFT */
-#define MASTER_RIGHT
-// #define EE_HANDS
+// #define MASTER_LEFT
+// #define MASTER_RIGHT
+#define EE_HANDS
 
 #define SSD1306OLED
 
 #define USE_SERIAL_PD2
 
-#define PERMISSIVE_HOLD
-#define IGNORE_MOD_TAP_INTERRUPT
-#define TAPPING_FORCE_HOLD
-#undef TAPPING_TERM
-#define TAPPING_TERM 250
-/* #define ONESHOT_TIMEOUT 250 */
+// #define TAPPING_FORCE_HOLD
+// #define TAPPING_TERM 100
 
+#ifdef RGBLIGHT_ENABLE
 #undef RGBLED_NUM
-#define RGBLIGHT_ANIMATIONS
 #define RGBLED_NUM 27
+
+#define RGBLIGHT_HUE_STEP 8
+#define RGBLIGHT_SAT_STEP 8
+#define RGBLIGHT_VAL_STEP 8
 #define RGBLIGHT_LIMIT_VAL 100
-#define RGBLIGHT_HUE_STEP 10
-#define RGBLIGHT_SAT_STEP 17
-#define RGBLIGHT_VAL_STEP 17
+#endif
 
-#define MOUSEKEY_DELAY             300
-#define MOUSEKEY_INTERVAL          50
-#define MOUSEKEY_MAX_SPEED         10
-#define MOUSEKEY_TIME_TO_MAX       20
-#define MOUSEKEY_WHEEL_MAX_SPEED   8
-#define MOUSEKEY_WHEEL_TIME_TO_MAX 40
-
-/* #define NO_ACTION_MACRO */
-/* #define NO_ACTION_FUNCTION */
-#define NO_ACTION_ONESHOT
+#ifdef AUDIO_ENABLE
+#define B6_AUDIO
+// #define NO_MUSIC_MODE
+#endif
