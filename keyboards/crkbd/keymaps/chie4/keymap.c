@@ -78,15 +78,6 @@ void persistent_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
-// Setting ADJUST layer RGB back to default
-void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
-  if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
-    layer_on(layer3);
-  } else {
-    layer_off(layer3);
-  }
-}
-
 void matrix_init_user(void) {
     #ifdef RGBLIGHT_ENABLE
       RGB_current_mode = rgblight_config.mode;
@@ -153,18 +144,24 @@ const char* read_layer_state(void) {
   switch (biton32(layer_state)) {
   case 0:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Default");
+    /* rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT); */
+    /* rgblight_setrgb(0,0,0); */
     break;
   case 1:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Slash");
+    /* rgblight_sethsv_noeeprom_coral(); */
     break;
   case 2:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Scolon");
+    /* rgblight_sethsv_noeeprom_cyan(); */
     break;
   case 3:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Space");
+    /* rgblight_sethsv_noeeprom_pink(); */
     break;
   case 4:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Mouse");
+    //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 2);
     break;
   default:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state);
@@ -232,6 +229,24 @@ void iota_gfx_task_user(void) {
 }
 #endif//SSD1306OLED
 
+// Setting ADJUST layer RGB back to default
+/* void update_tri_layer_RGB() { */
+/*   if (IS_LAYER_ON(0)) { */
+/*     rgblight_setrgb(0,0,0); */
+/*   } else if (IS_LAYER_ON(1)) { */
+/*     rgblight_setrgb(255,0,0); */
+/*   } else if (IS_LAYER_ON(2)) { */
+/*     rgblight_setrgb(0,255,0); */
+/*   } else { */
+/*     rgblight_setrgb(0,0,255); */
+/*   } */
+/*   /\* if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) { *\/ */
+/*   /\*   layer_on(layer3); *\/ */
+/*   /\* } else { *\/ */
+/*   /\*   layer_off(layer3); *\/ */
+/*   /\* } *\/ */
+/* } */
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
 #ifdef SSD1306OLED
@@ -241,33 +256,39 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
-  case LT(1,KC_SLSH):
-    if (record->event.pressed) {
-      update_tri_layer_RGB(1, 2, 3);
-    } else {
-      update_tri_layer_RGB(1, 2, 3);
-    }
-    return true;
-  case LT(2, KC_SCLN):
-    if (record->event.pressed) {
-      update_tri_layer_RGB(1, 2, 3);
-    } else {
-      update_tri_layer_RGB(1, 2, 3);
-    }
-    return true;
-  case LT(3, KC_SPC):
-    return true;
-  case MO(4):
-    return true;
-  case RGB_MOD:
-    #ifdef RGBLIGHT_ENABLE
-      if (record->event.pressed) {
-        rgblight_mode(RGB_current_mode);
-        rgblight_step();
-        RGB_current_mode = rgblight_config.mode;
-      }
-    #endif
-    return false;
+  /* case LT(1,KC_SLSH): */
+  /*   if (record->event.pressed) { */
+  /*     /\* rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 2); *\/ */
+  /*     /\* rgblight_enable(); *\/ */
+  /*     update_tri_layer_RGB(); */
+  /*   } else { */
+  /*     /\* rgblight_disable(); *\/ */
+  /*     update_tri_layer_RGB(); */
+  /*   } */
+  /*   return true; */
+  /* case LT(2, KC_SCLN): */
+  /*   if (record->event.pressed) { */
+  /*     /\* rgblight_setrgb(0,255,0); *\/ */
+  /*     /\* rgblight_enable(); *\/ */
+  /*     update_tri_layer_RGB(); */
+  /*   } else { */
+  /*     /\* rgblight_disable(); *\/ */
+  /*     update_tri_layer_RGB(); */
+  /*   } */
+  /*   return true; */
+  /* case LT(3, KC_SPC): */
+  /*   return true; */
+  /* case MO(4): */
+  /*   return true; */
+  /* case RGB_MOD: */
+  /*   #ifdef RGBLIGHT_ENABLE */
+  /*     if (record->event.pressed) { */
+  /*       rgblight_mode(RGB_current_mode); */
+  /*       rgblight_step(); */
+  /*       RGB_current_mode = rgblight_config.mode; */
+  /*     } */
+  /*   #endif */
+  /*   return false; */
   case KC_RGUI:
     #ifdef RGBLIGHT_ENABLE
       if (record->event.pressed) {
@@ -281,3 +302,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+uint32_t layer_state_set_user(uint32_t state) {
+  #ifdef RGBLIGHT_ENABLE
+  /* uint8_t default_layer = eeconfig_read_default_layer(); */
+  /* if (userspace_config.rgb_layer_change) { */
+    switch (biton32(state)) {
+    case 0:
+      rgblight_sethsv_noeeprom_blue();
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+      break;
+    case 1:
+      rgblight_sethsv_noeeprom_chartreuse();
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+      break;
+    case 2:
+      rgblight_sethsv_noeeprom_blue();
+      rgblight_mode_noeeprom(36);
+      break;
+    case 3:
+      rgblight_sethsv_noeeprom_blue();
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL+2);
+      break;
+    case 4:
+      rgblight_sethsv_noeeprom_springgreen();
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_GRADIENT+4);
+      break;
+    }
+  /* } */
+  #endif
+    return state;
+}

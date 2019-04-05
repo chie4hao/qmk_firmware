@@ -859,7 +859,8 @@ void rgblight_effect_rainbow_mood(uint8_t interval) {
 #endif
 
 __attribute__ ((weak))
-const uint8_t RGBLED_RAINBOW_SWIRL_INTERVALS[] PROGMEM = {100, 50, 20};
+/* const uint8_t RGBLED_RAINBOW_SWIRL_INTERVALS[] PROGMEM = {100, 50, 20}; */
+const uint8_t RGBLED_RAINBOW_SWIRL_INTERVALS[] PROGMEM = {10, 5, 2};
 
 void rgblight_effect_rainbow_swirl(uint8_t interval) {
   static uint16_t current_hue = 0;
@@ -1041,22 +1042,51 @@ void rgblight_effect_rgbtest(void) {
 #ifdef RGBLIGHT_EFFECT_ALTERNATING
 void rgblight_effect_alternating(void){
   static uint16_t last_timer = 0;
-  static uint16_t pos = 0;
-  if (timer_elapsed(last_timer) < 500) {
+  static uint16_t current_hue = 0;
+
+  //uint8_t interval_time = get_interval_time(&RGBLED_KNIGHT_INTERVALS[interval], 5, 100);
+  uint8_t interval_time = 40;
+
+  if (timer_elapsed(last_timer) < interval_time) {
     return;
   }
   last_timer = timer_read();
 
-  for(int i = 0; i<RGBLED_NUM; i++){
-      if(i<RGBLED_NUM/2 && pos){
-          sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]);
-      }else if (i>=RGBLED_NUM/2 && !pos){
-          sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]);
-      }else{
-          sethsv(rgblight_config.hue, rgblight_config.sat, 0, (LED_TYPE *)&led[i]);
-      }
+  static int8_t low_bound = 0;
+  static int8_t high_bound = RGBLIGHT_EFFECT_KNIGHT_LENGTH - 1;
+  static int8_t increment = 1;
+  uint8_t i, cur;
+
+  // Set all the LEDs to 0
+  for (i = 0; i < RGBLED_NUM; i++) {
+    led[i].r = 0;
+    led[i].g = 0;
+    led[i].b = 0;
+  }
+  // Determine which LEDs should be lit up
+  for (i = 0; i < RGBLIGHT_EFFECT_KNIGHT_LED_NUM; i++) {
+    cur = (i + RGBLIGHT_EFFECT_KNIGHT_OFFSET) % RGBLED_NUM;
+
+    if (i >= low_bound && i <= high_bound) {
+      /* sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[cur]); */
+      sethsv(current_hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[cur]);
+    } else {
+      led[cur].r = 0;
+      led[cur].g = 0;
+      led[cur].b = 0;
+    }
   }
   rgblight_set();
-  pos = (pos + 1) % 2;
+
+  // Move from low_bound to high_bound changing the direction we increment each
+  // time a boundary is hit.
+  low_bound += increment;
+  high_bound += increment;
+
+  current_hue = (current_hue + 7) % 360;
+
+  if (high_bound <= 0 || low_bound >= RGBLIGHT_EFFECT_KNIGHT_LED_NUM - 1) {
+    increment = -increment;
+  }
 }
 #endif

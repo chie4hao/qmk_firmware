@@ -237,6 +237,7 @@ void rgblight_timer_init(void);
 void rgblight_timer_enable(void);
 void rgblight_timer_disable(void);
 void rgblight_timer_toggle(void);
+void rgblight_effect_chie4(uint8_t intermal);
 void rgblight_effect_breathing(uint8_t interval);
 void rgblight_effect_rainbow_mood(uint8_t interval);
 void rgblight_effect_rainbow_swirl(uint8_t interval);
