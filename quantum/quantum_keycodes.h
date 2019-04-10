@@ -431,6 +431,9 @@ enum quantum_keycodes {
     // Right shift, close paren
     KC_RSPC,
 
+    CHIEL,
+    CHIER,
+
     // Shift, Enter
     KC_SFTENT,
 

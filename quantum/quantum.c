@@ -737,6 +737,22 @@ bool process_record_quantum(keyrecord_t *record) {
       return false;
     }
 
+      case CHIEL: {
+        if (record->event.pressed) {
+          shift_interrupted[0] = false;
+          scs_timer[0] = timer_read ();
+          register_mods(MOD_BIT(KC_LSFT));
+        }
+        else {
+          if (!shift_interrupted[0] && timer_elapsed(scs_timer[0]) < TAPPING_TERM) {
+            register_code(KC_LBRC);
+            unregister_code(KC_LBRC);
+          }
+          unregister_mods(MOD_BIT(KC_LSFT));
+        }
+        return false;
+      }
+
     case KC_SFTENT: {
       if (record->event.pressed) {
         shift_interrupted[1] = false;

@@ -818,7 +818,11 @@ const uint8_t RGBLED_BREATHING_INTERVALS[] PROGMEM = {30, 20, 10, 5};
 void rgblight_effect_breathing(uint8_t interval) {
   static uint8_t pos = 0;
   static uint16_t last_timer = 0;
+
+  static uint16_t current_hue = 0;
   float val;
+  uint16_t hue;
+  uint8_t i;
 
   uint8_t interval_time = get_interval_time(&RGBLED_BREATHING_INTERVALS[interval], 1, 100);
 
@@ -828,9 +832,26 @@ void rgblight_effect_breathing(uint8_t interval) {
   last_timer = timer_read();
 
   // http://sean.voisen.org/blog/2011/10/breathing-led-with-arduino/
-  val = (exp(sin((pos/255.0)*M_PI)) - RGBLIGHT_EFFECT_BREATHE_CENTER/M_E)*(RGBLIGHT_EFFECT_BREATHE_MAX/(M_E-1/M_E));
-  rgblight_sethsv_noeeprom_old(rgblight_config.hue, rgblight_config.sat, val);
+  /* val = (exp(sin((pos/255.0)*M_PI)) - RGBLIGHT_EFFECT_BREATHE_CENTER/M_E)*(RGBLIGHT_EFFECT_BREATHE_MAX/(M_E-1/M_E)); */
+  val = (pow(sin(pos/255.0*M_PI)-0.3,2))/49 * 25500;
+  /* rgblight_sethsv_noeeprom_old(rgblight_config.hue, rgblight_config.sat, val); */
+  for (i = 0; i < RGBLED_NUM; i++) {
+    hue = (360 / RGBLED_NUM * i + current_hue) % 360;
+    /* sethsv(hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]); */
+    sethsv(hue, rgblight_config.sat, val, (LED_TYPE *)&led[i]);
+  }
+  rgblight_set();
+  /* rgblight_sethsv_noeeprom_old(current_hue, rgblight_config.sat, val); */
   pos = (pos + 1) % 256;
+  if (interval % 2) {
+    current_hue = (current_hue + 1) % 360;
+  } else {
+    if (current_hue - 1 < 0) {
+      current_hue = 359;
+    } else {
+      current_hue = current_hue - 1;
+    }
+  }
 }
 #endif
 

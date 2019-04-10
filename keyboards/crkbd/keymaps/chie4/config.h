@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* #define MASTER_LEFT */
 #define MASTER_RIGHT
-// #define EE_HANDS
+/* #define EE_HANDS */
 
 #define SSD1306OLED
 
@@ -36,12 +36,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define IGNORE_MOD_TAP_INTERRUPT
 #define TAPPING_FORCE_HOLD
 #undef TAPPING_TERM
-#define TAPPING_TERM 150
-/* #define ONESHOT_TIMEOUT 250 */
+#define TAPPING_TERM 200
+/* #define TAPPING_TOGGLE 3 */
+#define ONESHOT_TIMEOUT 120
 
 #undef RGBLED_NUM
-#define RGBLIGHT_ANIMATIONS
-#define RGBLIGHT_EFFECT_CHIE4
+/* #define RGBLIGHT_ANIMATIONS */
+#define RGBLIGHT_EFFECT_BREATHING
+#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+#define RGBLIGHT_EFFECT_KNIGHT
+#define RGBLIGHT_EFFECT_STATIC_GRADIENT
+/* #define RGBLIGHT_EFFECT_RGB_TEST */
+#define RGBLIGHT_EFFECT_ALTERNATING
+/* #define RGBLIGHT_EFFECT_CHIE4 */
 #define RGBLED_NUM 27
 #define RGBLIGHT_LIMIT_VAL 100
 #define RGBLIGHT_HUE_STEP 10
@@ -55,6 +62,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_WHEEL_MAX_SPEED   8
 #define MOUSEKEY_WHEEL_TIME_TO_MAX 40
 
-/* #define NO_ACTION_MACRO */
-/* #define NO_ACTION_FUNCTION */
-#define NO_ACTION_ONESHOT
+#define NO_ACTION_MACRO
+#define NO_ACTION_FUNCTION
+#define FORCE_NKRO
+/* #define NO_ACTION_ONESHOT */
