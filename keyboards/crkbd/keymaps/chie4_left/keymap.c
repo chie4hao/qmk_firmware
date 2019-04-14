@@ -5,10 +5,10 @@
   #include "split_util.h"
 #endif
 #ifdef SSD1306OLED
-  #include "ssd1306.h"
+ #include "ssd1306.h"
 #endif
 
-#include "quantum.h"
+/* #include "quantum.h" */
 
 extern keymap_config_t keymap_config;
 
@@ -88,7 +88,6 @@ void persistent_default_layer_set(uint16_t default_layer) {
 void matrix_init_user(void) {
     #ifdef RGBLIGHT_ENABLE
       RGB_current_mode = rgblight_config.mode;
-      rgblight_enable();
     #endif
     //SSD1306 OLED init, make sure to add #define SSD1306OLED in config.h
     #ifdef SSD1306OLED
@@ -117,69 +116,69 @@ const char code_to_name[60] = {
     'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\',
     '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
 
-void set_keylog(uint16_t keycode, keyrecord_t *record) {
-  char name = ' ';
-  //if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
-  if (keycode < 60) {
-    name = code_to_name[keycode];
-  }
-  // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
-           record->event.key.row, record->event.key.col,
-           keycode, name);
+/* void set_keylog(uint16_t keycode, keyrecord_t *record) { */
+/*   char name = ' '; */
+/*   //if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; } */
+/*   if (keycode < 60) { */
+/*     name = code_to_name[keycode]; */
+/*   } */
+/*   // update keylog */
+/*   snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c", */
+/*            record->event.key.row, record->event.key.col, */
+/*            keycode, name); */
 
-  // update keylogs
-  if (keylogs_str_idx == sizeof(keylogs_str) - 1) {
-    keylogs_str_idx = 0;
-    for (int i = 0; i < sizeof(keylogs_str) - 1; i++) {
-      keylogs_str[i] = ' ';
-    }
-  }
+/*   // update keylogs */
+/*   if (keylogs_str_idx == sizeof(keylogs_str) - 1) { */
+/*     keylogs_str_idx = 0; */
+/*     for (int i = 0; i < sizeof(keylogs_str) - 1; i++) { */
+/*       keylogs_str[i] = ' '; */
+/*     } */
+/*   } */
 
-  keylogs_str[keylogs_str_idx] = name;
-  keylogs_str_idx++;
-}
+/*   keylogs_str[keylogs_str_idx] = name; */
+/*   keylogs_str_idx++; */
+/* } */
 
-const char *read_keylog(void) {
-  return keylog_str;
-}
+/* const char *read_keylog(void) { */
+/*   return keylog_str; */
+/* } */
 
-const char *read_keylogs(void) {
-  return keylogs_str;
-}
+/* const char *read_keylogs(void) { */
+/*   return keylogs_str; */
+/* } */
 
-const char* read_layer_state(void) {
-  switch (biton32(layer_state)) {
-  case 0:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Default");
-    /* rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT); */
-    /* rgblight_setrgb(0,0,0); */
-    break;
-  case 1:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Game");
-    //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 2);
-    break;
-  case 2:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Slash");
-    /* rgblight_sethsv_noeeprom_coral(); */
-    break;
-  case 3:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Scolon");
-    /* rgblight_sethsv_noeeprom_cyan(); */
-    break;
-  case 4:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Space");
-    /* rgblight_sethsv_noeeprom_pink(); */
-    break;
-  case 5:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Mouse");
-    //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 2);
-    break;
-  default:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state);
-  }
-  return layer_state_str;
-}
+/* const char* read_layer_state(void) { */
+/*   switch (biton32(layer_state)) { */
+/*   case 0: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Default"); */
+/*     /\* rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT); *\/ */
+/*     /\* rgblight_setrgb(0,0,0); *\/ */
+/*     break; */
+/*   case 1: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Game"); */
+/*     //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 2); */
+/*     break; */
+/*   case 2: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Slash"); */
+/*     /\* rgblight_sethsv_noeeprom_coral(); *\/ */
+/*     break; */
+/*   case 3: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Scolon"); */
+/*     /\* rgblight_sethsv_noeeprom_cyan(); *\/ */
+/*     break; */
+/*   case 4: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Space"); */
+/*     /\* rgblight_sethsv_noeeprom_pink(); *\/ */
+/*     break; */
+/*   case 5: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Mouse"); */
+/*     //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 2); */
+/*     break; */
+/*   default: */
+/*     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state); */
+/*   } */
+/*   return layer_state_str; */
+/* } */
 
 const char *read_logo(void) {
   static char logo[] = {
@@ -191,12 +190,12 @@ const char *read_logo(void) {
   return logo;
 }
 
-const char *read_rgb_info(void) {
-  snprintf(rbf_info_str, sizeof(rbf_info_str), "%s %2d h%3d s%3d v%3d",
-           rgblight_config.enable ? "on" : "- ", rgblight_config.mode,
-           rgblight_config.hue, rgblight_config.sat, rgblight_config.val);
-  return rbf_info_str;
-}
+/* const char *read_rgb_info(void) { */
+/*   snprintf(rbf_info_str, sizeof(rbf_info_str), "%s %2d h%3d s%3d v%3d", */
+/*            rgblight_config.enable ? "on" : "- ", rgblight_config.mode, */
+/*            rgblight_config.hue, rgblight_config.sat, rgblight_config.val); */
+/*   return rbf_info_str; */
+/* } */
 
 // When add source files to SRC in rules.mk, you can use functions.
 
@@ -210,20 +209,14 @@ void matrix_scan_user(void) {
 }
 
 void matrix_render_user(struct CharacterMatrix *matrix) {
-  if (is_master) {
-    // If you want to change the display of OLED, you need to change here
-    matrix_write_ln(matrix, read_layer_state());
-    matrix_write_ln(matrix, read_keylog());
-    matrix_write_ln(matrix, read_keylogs());
-    //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
-    //matrix_write_ln(matrix, read_host_led_state());
-    //matrix_write_ln(matrix, read_timelog());
-  } else {
-    /* matrix_write_ln(matrix, read_layer_state()); */
-    /* matrix_write_ln(matrix, read_keylog()); */
-    /* matrix_write_ln(matrix, read_keylogs()); */
-    matrix_write(matrix, read_logo());
-  }
+  /* if (!is_master) { */
+  /*   matrix_write_ln(matrix, read_layer_state()); */
+  /*   matrix_write_ln(matrix, read_keylog()); */
+  /*   matrix_write_ln(matrix, read_keylogs()); */
+  /* } else { */
+  /*   matrix_write(matrix, read_logo()); */
+  /* } */
+  matrix_write(matrix, read_logo());
 }
 
 void matrix_update(struct CharacterMatrix *dest, const struct CharacterMatrix *source) {
@@ -259,77 +252,77 @@ void iota_gfx_task_user(void) {
 /*   /\* } *\/ */
 /* } */
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-#ifdef SSD1306OLED
-    set_keylog(keycode, record);
-#endif
-    // set_timelog();
-  }
-  /* switch (keycode) { */
-  /* case CHIEL: { */
-  /*   if (record->event.pressed) { */
-  /*     shift_interrupted[0] = false; */
-  /*     scs_timer[0] = timer_read (); */
-  /*     register_mods(MOD_BIT(KC_LSFT)); */
-  /*   } */
-  /*   else { */
-  /*     if (!shift_interrupted[0] && timer_elapsed(scs_timer[0]) < TAPPING_TERM) { */
-  /*       register_code(KC_LBRC); */
-  /*       unregister_code(KC_LBRC); */
-  /*     } */
-  /*     unregister_mods(MOD_BIT(KC_LSFT)); */
-  /*   } */
-  /*   return false; */
-  /* } */
-  /* } */
+/* bool process_record_user(uint16_t keycode, keyrecord_t *record) { */
+/*   if (record->event.pressed) { */
+/* #ifdef SSD1306OLED */
+/*     set_keylog(keycode, record); */
+/* #endif */
+/*     // set_timelog(); */
+/*   } */
+/*   /\* switch (keycode) { *\/ */
+/*   /\* case CHIEL: { *\/ */
+/*   /\*   if (record->event.pressed) { *\/ */
+/*   /\*     shift_interrupted[0] = false; *\/ */
+/*   /\*     scs_timer[0] = timer_read (); *\/ */
+/*   /\*     register_mods(MOD_BIT(KC_LSFT)); *\/ */
+/*   /\*   } *\/ */
+/*   /\*   else { *\/ */
+/*   /\*     if (!shift_interrupted[0] && timer_elapsed(scs_timer[0]) < TAPPING_TERM) { *\/ */
+/*   /\*       register_code(KC_LBRC); *\/ */
+/*   /\*       unregister_code(KC_LBRC); *\/ */
+/*   /\*     } *\/ */
+/*   /\*     unregister_mods(MOD_BIT(KC_LSFT)); *\/ */
+/*   /\*   } *\/ */
+/*   /\*   return false; *\/ */
+/*   /\* } *\/ */
+/*   /\* } *\/ */
 
-  /* switch (keycode) { */
-  /* case LT(1,KC_SLSH): */
-  /*   if (record->event.pressed) { */
-  /*     /\* rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 2); *\/ */
-  /*     /\* rgblight_enable(); *\/ */
-  /*     update_tri_layer_RGB(); */
-  /*   } else { */
-  /*     /\* rgblight_disable(); *\/ */
-  /*     update_tri_layer_RGB(); */
-  /*   } */
-  /*   return true; */
-  /* case LT(2, KC_SCLN): */
-  /*   if (record->event.pressed) { */
-  /*     /\* rgblight_setrgb(0,255,0); *\/ */
-  /*     /\* rgblight_enable(); *\/ */
-  /*     update_tri_layer_RGB(); */
-  /*   } else { */
-  /*     /\* rgblight_disable(); *\/ */
-  /*     update_tri_layer_RGB(); */
-  /*   } */
-  /*   return true; */
-  /* case LT(3, KC_SPC): */
-  /*   return true; */
-  /* case MO(4): */
-  /*   return true; */
-  /* case RGB_MOD: */
-  /*   #ifdef RGBLIGHT_ENABLE */
-  /*     if (record->event.pressed) { */
-  /*       rgblight_mode(RGB_current_mode); */
-  /*       rgblight_step(); */
-  /*       RGB_current_mode = rgblight_config.mode; */
-  /*     } */
-  /*   #endif */
-  /*   return false; */
-  /* case KC_RGUI: */
-  /*   #ifdef RGBLIGHT_ENABLE */
-  /*     if (record->event.pressed) { */
-  /*       eeconfig_update_rgblight_default(); */
-  /*       rgblight_enable(); */
-  /*       RGB_current_mode = rgblight_config.mode; */
-  /*     } */
-  /*   #endif */
-  /*   return true; */
-  /* } */
-  return true;
-}
+/*   /\* switch (keycode) { *\/ */
+/*   /\* case LT(1,KC_SLSH): *\/ */
+/*   /\*   if (record->event.pressed) { *\/ */
+/*   /\*     /\\* rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 2); *\\/ *\/ */
+/*   /\*     /\\* rgblight_enable(); *\\/ *\/ */
+/*   /\*     update_tri_layer_RGB(); *\/ */
+/*   /\*   } else { *\/ */
+/*   /\*     /\\* rgblight_disable(); *\\/ *\/ */
+/*   /\*     update_tri_layer_RGB(); *\/ */
+/*   /\*   } *\/ */
+/*   /\*   return true; *\/ */
+/*   /\* case LT(2, KC_SCLN): *\/ */
+/*   /\*   if (record->event.pressed) { *\/ */
+/*   /\*     /\\* rgblight_setrgb(0,255,0); *\\/ *\/ */
+/*   /\*     /\\* rgblight_enable(); *\\/ *\/ */
+/*   /\*     update_tri_layer_RGB(); *\/ */
+/*   /\*   } else { *\/ */
+/*   /\*     /\\* rgblight_disable(); *\\/ *\/ */
+/*   /\*     update_tri_layer_RGB(); *\/ */
+/*   /\*   } *\/ */
+/*   /\*   return true; *\/ */
+/*   /\* case LT(3, KC_SPC): *\/ */
+/*   /\*   return true; *\/ */
+/*   /\* case MO(4): *\/ */
+/*   /\*   return true; *\/ */
+/*   /\* case RGB_MOD: *\/ */
+/*   /\*   #ifdef RGBLIGHT_ENABLE *\/ */
+/*   /\*     if (record->event.pressed) { *\/ */
+/*   /\*       rgblight_mode(RGB_current_mode); *\/ */
+/*   /\*       rgblight_step(); *\/ */
+/*   /\*       RGB_current_mode = rgblight_config.mode; *\/ */
+/*   /\*     } *\/ */
+/*   /\*   #endif *\/ */
+/*   /\*   return false; *\/ */
+/*   /\* case KC_RGUI: *\/ */
+/*   /\*   #ifdef RGBLIGHT_ENABLE *\/ */
+/*   /\*     if (record->event.pressed) { *\/ */
+/*   /\*       eeconfig_update_rgblight_default(); *\/ */
+/*   /\*       rgblight_enable(); *\/ */
+/*   /\*       RGB_current_mode = rgblight_config.mode; *\/ */
+/*   /\*     } *\/ */
+/*   /\*   #endif *\/ */
+/*   /\*   return true; *\/ */
+/*   /\* } *\/ */
+/*   return true; */
+/* } */
 
 uint32_t layer_state_set_user(uint32_t state) {
   #ifdef RGBLIGHT_ENABLE
